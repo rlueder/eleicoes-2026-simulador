@@ -43,6 +43,72 @@
         "indecisos": 5
       },
       "note": "Lista de candidatos diferente da rodada de junho (sem Aécio Neves, Joaquim Barbosa, Edmilson Costa e Heró Bezerra); comparações diretas exigem cautela."
+    },
+    {
+      "id": "voxbrasil-2026-06",
+      "label": "Vox Brasil · junho 2026",
+      "institute": "Vox Brasil",
+      "released": "2026-06-08",
+      "fieldwork": "1º a 3 de junho de 2026",
+      "method": null,
+      "sample": 2100,
+      "marginPP": 2.15,
+      "confidence": 95,
+      "tse": "08016/2026",
+      "contractor": null,
+      "sourceUrl": "https://www.jb.com.br/brasil/politica/2026/06/1059871-lula-lidera-nova-pesquisa-vox-brasil-sobre-a-disputa-presidencial.html",
+      "numbers": {
+        "lula": 42.1,
+        "flavio": 33.6,
+        "outros": 19.1,
+        "branco": 2.9,
+        "indecisos": 2.3
+      },
+      "note": "Amostra inclui eleitores a partir de 16 anos; percentuais divulgados com uma casa decimal."
+    },
+    {
+      "id": "rtbd-2026-05",
+      "label": "Real Time Big Data · maio 2026",
+      "institute": "Real Time Big Data",
+      "released": "2026-06-01",
+      "fieldwork": "29 e 30 de maio de 2026",
+      "method": null,
+      "sample": 2000,
+      "marginPP": 2,
+      "confidence": 95,
+      "tse": "BR-05864/2026",
+      "contractor": null,
+      "sourceUrl": "https://www.cartacapital.com.br/politica/a-disputa-pela-presidencia-no-1o-turno-segundo-nova-pesquisa-real-time-big-data-2/",
+      "numbers": {
+        "lula": 38,
+        "flavio": 31,
+        "outros": 24,
+        "branco": 3,
+        "indecisos": 4
+      },
+      "note": "Cenário estimulado principal (com Joaquim Barbosa entre os candidatos); a rodada também testou cenário alternativo com Aldo Rebelo."
+    },
+    {
+      "id": "datafolha-2026-05",
+      "label": "Datafolha · maio 2026",
+      "institute": "Datafolha",
+      "released": "2026-05-21",
+      "fieldwork": "20 e 21 de maio de 2026",
+      "method": null,
+      "sample": 2004,
+      "marginPP": 2,
+      "confidence": 95,
+      "tse": "BR-07489/2026",
+      "contractor": "Folha de S.Paulo",
+      "sourceUrl": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/datafolha-presidente-maio-2026-2/",
+      "numbers": {
+        "lula": 40,
+        "flavio": 31,
+        "outros": 17,
+        "branco": 9,
+        "indecisos": 3
+      },
+      "note": "Cenário estimulado com Flávio Bolsonaro; primeira rodada do Datafolha após o vazamento do áudio Flávio–Vorcaro."
     }
   ]
 }
