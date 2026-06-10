@@ -1,0 +1,48 @@
+{
+  "polls": [
+    {
+      "id": "quaest-2026-06",
+      "label": "Genial/Quaest · junho 2026",
+      "institute": "Genial/Quaest",
+      "released": "2026-06-10",
+      "fieldwork": "5 a 8 de junho de 2026",
+      "method": "entrevistas presenciais",
+      "sample": 2004,
+      "marginPP": 2,
+      "confidence": 95,
+      "tse": "BR-07661/2026",
+      "contractor": "Banco Genial S.A.",
+      "sourceUrl": "https://gauchazh.clicrbs.com.br/politica/eleicoes/noticia/2026/06/pesquisa-quaest-lula-tem-44-e-flavio-bolsonaro-38-das-intencoes-de-voto-no-segundo-turno-cmq7wo05s00wq016t1ayknoj1.html",
+      "numbers": {
+        "lula": 39,
+        "flavio": 29,
+        "outros": 13,
+        "branco": 9,
+        "indecisos": 10
+      },
+      "note": "Cenário estimulado de 1º turno com 12 candidatos."
+    },
+    {
+      "id": "quaest-2026-05",
+      "label": "Genial/Quaest · maio 2026",
+      "institute": "Genial/Quaest",
+      "released": "2026-05-14",
+      "fieldwork": "maio de 2026",
+      "method": "entrevistas presenciais",
+      "sample": 2004,
+      "marginPP": 2,
+      "confidence": 95,
+      "tse": null,
+      "contractor": "Banco Genial S.A.",
+      "sourceUrl": null,
+      "numbers": {
+        "lula": 39,
+        "flavio": 33,
+        "outros": 13,
+        "branco": 10,
+        "indecisos": 5
+      },
+      "note": "Lista de candidatos diferente da rodada de junho (sem Aécio Neves, Joaquim Barbosa, Edmilson Costa e Heró Bezerra); comparações diretas exigem cautela."
+    }
+  ]
+}

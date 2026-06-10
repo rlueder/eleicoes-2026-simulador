@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador 1º turno 2026 — Lula × Flávio</title>
+<meta name="description" content="Simule cenários do primeiro turno de 2026 com dados de pesquisas reais: indecisos, anulação e voto útil. O que cada candidato precisa para vencer sem segundo turno?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,500;75,700;100,400;100,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFBF8; --ink:#191917; --muted:#6E6E66; --line:#DCDCD2;
+  --pt:#C4122D; --pl:#1B4F9C; --win:#0E7C52; --card:#F2F2EB;
+  --accent:var(--pt);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#16161A; --ink:#EDEDE6; --muted:#9A9A90; --line:#34343C; --card:#1F1F26; }
+}
+*{box-sizing:border-box; margin:0}
+html{font-size:16px}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Archivo",system-ui,sans-serif; font-stretch:100%;
+  line-height:1.55; padding:0 20px 64px;
+}
+.wrap{max-width:760px; margin:0 auto}
+header{padding:40px 0 20px; border-bottom:2px solid var(--ink)}
+.kicker{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+h1{
+  font-stretch:75%; font-weight:700; font-size:clamp(1.7rem,5vw,2.5rem);
+  line-height:1.05; margin:6px 0 4px;
+}
+h1 .ax{color:var(--accent); transition:color .25s}
+.sub{color:var(--muted); font-size:.95rem; max-width:56ch}
+
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:24px 0 4px}
+.toggle{display:flex; border:1.5px solid var(--ink); border-radius:10px; overflow:hidden}
+.toggle button{
+  appearance:none; border:0; background:transparent; color:var(--ink);
+  font:inherit; font-weight:500; font-size:.92rem; padding:10px 18px; cursor:pointer;
+}
+.toggle button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:700}
+.toggle button:focus-visible{outline:3px solid var(--accent); outline-offset:-3px}
+select#round{
+  appearance:none; font:inherit; font-size:.9rem; font-weight:500; cursor:pointer;
+  color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:10px;
+  padding:10px 36px 10px 14px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236E6E66' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 12px center;
+}
+select#round:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.pollnote{font-size:.8rem; color:var(--muted); margin-top:10px; max-width:62ch}
+
+section{padding:26px 0; border-bottom:1px solid var(--line)}
+h2{font-stretch:75%; font-weight:700; font-size:1.05rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px}
+
+.presets{display:flex; flex-wrap:wrap; gap:8px}
+.presets button{
+  appearance:none; font:inherit; font-size:.85rem; padding:8px 14px; cursor:pointer;
+  background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:999px;
+}
+.presets button:hover{border-color:var(--accent); color:var(--accent)}
+.presets button:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+.ctl{display:grid; grid-template-columns:minmax(180px,260px) 1fr 64px; gap:14px; align-items:center; margin-bottom:18px}
+.ctl label{font-size:.9rem; color:var(--muted)}
+.ctl output{font-weight:700; font-stretch:75%; font-size:1.05rem; text-align:right; font-variant-numeric:tabular-nums}
+input[type=range]{
+  appearance:none; -webkit-appearance:none; width:100%; height:26px; background:transparent; cursor:pointer;
+}
+input[type=range]::-webkit-slider-runnable-track{height:4px; background:var(--line); border-radius:2px}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+  background:var(--accent); margin-top:-8px; border:3px solid var(--paper); box-shadow:0 0 0 1.5px var(--accent);
+}
+input[type=range]::-moz-range-track{height:4px; background:var(--line); border-radius:2px}
+input[type=range]::-moz-range-thumb{width:14px; height:14px; border-radius:50%; background:var(--accent); border:3px solid var(--paper); box-shadow:0 0 0 1.5px var(--accent)}
+input[type=range]:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:4px}
+
+.verdict{display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; margin-bottom:20px}
+.bignum{font-stretch:75%; font-weight:700; font-size:clamp(2.4rem,8vw,3.6rem); line-height:1; font-variant-numeric:tabular-nums}
+.bignum small{display:block; font-size:.8rem; font-weight:500; font-stretch:100%; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.stamp{
+  font-stretch:75%; font-weight:700; font-size:1rem; text-transform:uppercase; letter-spacing:.08em;
+  padding:10px 16px; border:2.5px solid currentColor; border-radius:8px; transform:rotate(-2deg);
+}
+.race{margin-bottom:6px}
+.race .row{display:grid; grid-template-columns:64px 1fr 70px; gap:10px; align-items:center; margin-bottom:10px; font-size:.88rem}
+.race .name{font-weight:500}
+.race .val{text-align:right; font-weight:700; font-stretch:75%; font-size:1rem; font-variant-numeric:tabular-nums}
+.track{position:relative; height:24px; background:var(--card); border-radius:6px}
+.fill{position:absolute; inset:0 auto 0 0; border-radius:6px; transition:width .2s}
+.cut{position:absolute; left:50%; top:-7px; bottom:-7px; width:2px; background:var(--ink)}
+.cutlab{font-size:.74rem; color:var(--muted); text-align:center; margin-top:10px}
+
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:22px}
+.card{background:var(--card); border-radius:10px; padding:14px 16px}
+.card p{font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:4px}
+.card strong{font-stretch:75%; font-weight:700; font-size:1.3rem; font-variant-numeric:tabular-nums}
+
+.share{margin-top:22px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.share button{
+  appearance:none; font:inherit; font-size:.88rem; font-weight:500; padding:10px 16px; cursor:pointer;
+  background:var(--ink); color:var(--paper); border:0; border-radius:8px;
+}
+.share button:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.share span{font-size:.82rem; color:var(--win); font-weight:500}
+
+footer{padding-top:24px; font-size:.82rem; color:var(--muted); max-width:64ch}
+footer p+p{margin-top:10px}
+footer a{color:var(--accent)}
+@media (max-width:560px){ .ctl{grid-template-columns:1fr 56px} .ctl label{grid-column:1 / -1; margin-bottom:-8px} }
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">Eleições 2026 · primeiro turno · simulador de cenários</p>
+  <h1>O que <span class="ax" id="axName">Lula</span> precisa para vencer sem segundo turno?</h1>
+  <p class="sub">Vitória no 1º turno exige mais de 50% dos <strong>votos válidos</strong> (excluídos brancos e nulos). Escolha a pesquisa-base, mexa nas três alavancas — indecisos, anulação e voto útil — e veja a conta fechar ou não.</p>
+  <div class="controls">
+    <div class="toggle" role="group" aria-label="Escolha o candidato protagonista">
+      <button id="btnLula" aria-pressed="true" onclick="setAxis('lula')">Lula (PT)</button>
+      <button id="btnFlavio" aria-pressed="false" onclick="setAxis('flavio')">Flávio Bolsonaro (PL)</button>
+    </div>
+    <select id="round" aria-label="Pesquisa usada como base"></select>
+  </div>
+  <p class="pollnote" id="pollNote"></p>
+</header>
+
+<section>
+  <h2>Cenários prontos</h2>
+  <div class="presets" id="presets"></div>
+</section>
+
+<section>
+  <h2>Alavancas</h2>
+  <div class="ctl">
+    <label for="sP" id="labP">Indecisos que vão para Lula</label>
+    <input type="range" id="sP" min="0" max="100" step="1" value="48">
+    <output id="oP">48%</output>
+  </div>
+  <div class="ctl">
+    <label for="sB">Indecisos que votam branco/nulo</label>
+    <input type="range" id="sB" min="0" max="100" step="1" value="0">
+    <output id="oB">0%</output>
+  </div>
+  <div class="ctl">
+    <label for="sT" id="labT">Migração dos demais candidatos (voto útil)</label>
+    <input type="range" id="sT" min="0" max="10" step="0.5" value="0">
+    <output id="oT">0 pp</output>
+  </div>
+</section>
+
+<section>
+  <h2>Resultado do cenário</h2>
+  <div class="verdict">
+    <div class="bignum"><small id="bigLab">Lula nos votos válidos</small><span id="bigVal">—</span></div>
+    <div class="stamp" id="stamp">2º turno</div>
+  </div>
+
+  <div class="race" aria-live="polite">
+    <div class="row">
+      <span class="name">Lula</span>
+      <div class="track"><div class="fill" id="barL" style="width:0%; background:var(--pt)"></div><div class="cut" aria-hidden="true"></div></div>
+      <span class="val" id="valL">—</span>
+    </div>
+    <div class="row">
+      <span class="name">Flávio</span>
+      <div class="track"><div class="fill" id="barF" style="width:0%; background:var(--pl)"></div><div class="cut" aria-hidden="true"></div></div>
+      <span class="val" id="valF">—</span>
+    </div>
+    <p class="cutlab">linha central = 50% dos votos válidos · cruzou, venceu no 1º turno</p>
+  </div>
+
+  <div class="cards">
+    <div class="card"><p>Diferença</p><strong id="kGap">—</strong></div>
+    <div class="card"><p>Demais candidatos</p><strong id="kOut">—</strong></div>
+    <div class="card"><p>Branco/nulo</p><strong id="kBr">—</strong></div>
+    <div class="card"><p>Votos válidos</p><strong id="kVal">—</strong></div>
+  </div>
+
+  <div class="share">
+    <button onclick="copyLink()">Copiar link deste cenário</button>
+    <span id="copied" hidden>link copiado ✓</span>
+  </div>
+</section>
+
+<footer>
+  <p id="meta"></p>
+  <p><strong>Como a conta é feita.</strong> Os indecisos não destinados ao protagonista nem à anulação se distribuem proporcionalmente entre o adversário e os demais candidatos. A migração por voto útil é retirada apenas dos demais candidatos. Vitória no 1º turno = mais de 50% dos votos válidos (art. 77, §2º, da Constituição).</p>
+  <p id="caveat"></p>
+  <p>Exercício matemático de cenários, não previsão eleitoral. Para adicionar novas rodadas de pesquisa, edite o arquivo <code>polls.json</code> — nenhuma alteração de código é necessária.</p>
+</footer>
+
+</div>
+<script>
+const FALLBACK={"polls":[
+  {"id":"quaest-2026-06","label":"Genial/Quaest · junho 2026","institute":"Genial/Quaest","released":"2026-06-10","fieldwork":"5 a 8 de junho de 2026","method":"entrevistas presenciais","sample":2004,"marginPP":2,"confidence":95,"tse":"BR-07661/2026","contractor":"Banco Genial S.A.","sourceUrl":"https://gauchazh.clicrbs.com.br/politica/eleicoes/noticia/2026/06/pesquisa-quaest-lula-tem-44-e-flavio-bolsonaro-38-das-intencoes-de-voto-no-segundo-turno-cmq7wo05s00wq016t1ayknoj1.html","numbers":{"lula":39,"flavio":29,"outros":13,"branco":9,"indecisos":10},"note":"Cenário estimulado de 1º turno com 12 candidatos."},
+  {"id":"quaest-2026-05","label":"Genial/Quaest · maio 2026","institute":"Genial/Quaest","released":"2026-05-14","fieldwork":"maio de 2026","method":"entrevistas presenciais","sample":2004,"marginPP":2,"confidence":95,"tse":null,"contractor":"Banco Genial S.A.","sourceUrl":null,"numbers":{"lula":39,"flavio":33,"outros":13,"branco":10,"indecisos":5},"note":"Lista de candidatos diferente da rodada de junho; comparações diretas exigem cautela."}
+]};
+const NAMES={lula:"Lula",flavio:"Flávio"};
+let polls=FALLBACK.polls, poll=null, axis="lula";
+const $=id=>document.getElementById(id);
+const sP=$("sP"),sB=$("sB"),sT=$("sT");
+const fmt=n=>n.toFixed(1).replace(".",",");
+
+function compute(ax,pP,pB,t){
+  const N=poll.numbers, op=ax==="lula"?"flavio":"lula";
+  const iP=N.indecisos*pP/100, iB=N.indecisos*pB/100, iRest=N.indecisos-iP-iB;
+  let opV=N[op], out=N.outros;
+  const w=opV+out;
+  if(w>0){ opV+=iRest*opV/w; out+=iRest*out/w; }
+  const tt=Math.min(t,out); out-=tt;
+  const meV=N[ax]+iP+tt;
+  const branco=N.branco+iB, valid=100-branco;
+  return {meV,opV,out,branco,valid,shMe:meV/valid*100,shOp:opV/valid*100};
+}
+
+function presetsFor(ax){
+  const N=poll.numbers, decided=100-N.branco-N.indecisos;
+  const prop=Math.round(N[ax]/decided*100);
+  if(ax==="lula") return [
+    {l:"Indecisos divididos proporcionalmente",v:[prop,0,0]},
+    {l:"Indecisos anulam + migração leve",v:[0,100,2]},
+    {l:"Lula domina os indecisos",v:[70,0,0]},
+    {l:"Voto útil moderado",v:[30,30,3]}
+  ];
+  return [
+    {l:"Indecisos proporcionais",v:[prop,0,0]},
+    {l:"Recupera o que perdeu",v:[50,50,0]},
+    {l:"Consolida a direita",v:[70,0,6]},
+    {l:"Onda máxima",v:[100,0,10]}
+  ];
+}
+
+function render(){
+  let pP=+sP.value, pB=+sB.value, t=+sT.value;
+  if(pP+pB>100){pB=100-pP; sB.value=pB;}
+  $("oP").textContent=Math.round(pP)+"%";
+  $("oB").textContent=Math.round(pB)+"%";
+  $("oT").textContent=fmt(t)+" pp";
+  const r=compute(axis,pP,pB,t);
+  const shL=axis==="lula"?r.shMe:r.shOp, shF=axis==="lula"?r.shOp:r.shMe;
+  $("bigLab").textContent=NAMES[axis]+" nos votos válidos";
+  $("bigVal").textContent=fmt(r.shMe)+"%";
+  $("valL").textContent=fmt(shL)+"%"; $("valF").textContent=fmt(shF)+"%";
+  $("barL").style.width=Math.min(shL,100)+"%";
+  $("barF").style.width=Math.min(shF,100)+"%";
+  $("kGap").textContent=fmt(Math.abs(shL-shF))+" pp";
+  $("kOut").textContent=fmt(r.out)+"%";
+  $("kBr").textContent=fmt(r.branco)+"%";
+  $("kVal").textContent=fmt(r.valid)+"%";
+  const st=$("stamp");
+  if(shL>50){st.textContent="Lula vence no 1º turno"; st.style.color="var(--pt)";}
+  else if(shF>50){st.textContent="Flávio vence no 1º turno"; st.style.color="var(--pl)";}
+  else{
+    const leader=shL>=shF?"Lula":"Flávio";
+    st.textContent="2º turno · "+leader+" na frente";
+    st.style.color="var(--muted)";
+  }
+  history.replaceState(null,"","#"+[poll.id,axis,pP,pB,t].join(";"));
+}
+
+function renderMeta(){
+  const p=poll, bits=[];
+  bits.push("<strong>Fonte: "+p.institute+".</strong>");
+  if(p.sample) bits.push(p.sample.toLocaleString("pt-BR")+" eleitores ouvidos");
+  if(p.fieldwork) bits.push("entre "+p.fieldwork);
+  if(p.method) bits.push("("+p.method+")");
+  let s=bits.join(" ")+".";
+  if(p.marginPP) s+=" Margem de erro de ±"+p.marginPP+" pp"+(p.confidence?", confiança de "+p.confidence+"%":"")+".";
+  if(p.contractor) s+=" Contratada por "+p.contractor+".";
+  if(p.tse) s+=" Registro TSE "+p.tse+".";
+  if(p.sourceUrl) s+=' <a href="'+p.sourceUrl+'" target="_blank" rel="noopener">Reportagem de origem ↗</a>';
+  $("meta").innerHTML=s;
+  $("pollNote").textContent=(p.note||"")+" Base: Lula "+p.numbers.lula+"% · Flávio "+p.numbers.flavio+"% · demais "+p.numbers.outros+"% · branco/nulo "+p.numbers.branco+"% · indecisos "+p.numbers.indecisos+"%.";
+  $("caveat").innerHTML="<strong>Caveats.</strong> Com margem de ±"+(p.marginPP||2)+" pp, boa parte das diferenças simuladas cabe dentro do erro amostral; faltam meses de campanha e o modelo ignora efeitos de segunda ordem (desistências, rejeição, comparecimento).";
+}
+
+function buildRounds(){
+  const sel=$("round"); sel.innerHTML="";
+  polls.forEach(p=>{
+    const o=document.createElement("option");
+    o.value=p.id; o.textContent=p.label;
+    sel.appendChild(o);
+  });
+  sel.onchange=()=>setPoll(sel.value);
+}
+
+function setPoll(id,keepSliders){
+  poll=polls.find(p=>p.id===id)||polls[0];
+  $("round").value=poll.id;
+  renderMeta();
+  buildPresets();
+  if(!keepSliders){const d=presetsFor(axis)[0].v; sP.value=d[0]; sB.value=d[1]; sT.value=d[2];}
+  render();
+}
+
+function buildPresets(){
+  const ps=$("presets"); ps.innerHTML="";
+  presetsFor(axis).forEach(p=>{
+    const b=document.createElement("button");
+    b.textContent=p.l;
+    b.onclick=()=>{sP.value=p.v[0]; sB.value=p.v[1]; sT.value=p.v[2]; render();};
+    ps.appendChild(b);
+  });
+}
+
+function setAxis(ax,keepSliders){
+  axis=ax;
+  document.documentElement.style.setProperty("--accent",ax==="lula"?"var(--pt)":"var(--pl)");
+  $("btnLula").setAttribute("aria-pressed",ax==="lula");
+  $("btnFlavio").setAttribute("aria-pressed",ax==="flavio");
+  $("axName").textContent=ax==="lula"?"Lula":"Flávio Bolsonaro";
+  $("labP").textContent="Indecisos que vão para "+NAMES[ax];
+  $("labT").textContent="Migração dos demais candidatos para "+NAMES[ax];
+  buildPresets();
+  if(!keepSliders){const d=presetsFor(ax)[0].v; sP.value=d[0]; sB.value=d[1]; sT.value=d[2];}
+  render();
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    $("copied").hidden=false;
+    setTimeout(()=>$("copied").hidden=true,2000);
+  });
+}
+
+[sP,sB,sT].forEach(s=>s.addEventListener("input",render));
+
+function init(){
+  polls.sort((a,b)=>(b.released||"").localeCompare(a.released||""));
+  buildRounds();
+  const h=location.hash.replace("#","").split(";");
+  if(h.length===5 && polls.some(p=>p.id===h[0]) && (h[1]==="lula"||h[1]==="flavio")){
+    axis=h[1]; sP.value=+h[2]||0; sB.value=+h[3]||0; sT.value=+h[4]||0;
+    setPoll(h[0],true);
+    setAxis(h[1],true);
+  } else {
+    setPoll(polls[0].id,true);
+    setAxis("lula");
+  }
+}
+
+fetch("polls.json")
+  .then(r=>r.ok?r.json():Promise.reject())
+  .then(d=>{ if(d && Array.isArray(d.polls) && d.polls.length) polls=d.polls; })
+  .catch(()=>{})
+  .finally(init);
+</script>
+</body>
+</html>
