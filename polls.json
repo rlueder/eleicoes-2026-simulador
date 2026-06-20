@@ -1,6 +1,28 @@
 {
   "polls": [
     {
+      "id": "datafolha-2026-06",
+      "label": "Datafolha · junho 2026",
+      "institute": "Datafolha",
+      "released": "2026-06-20",
+      "fieldwork": "17 a 19 de junho de 2026",
+      "method": null,
+      "sample": 2004,
+      "marginPP": 2,
+      "confidence": 95,
+      "tse": "BR-09956/2026",
+      "contractor": "Folha de S.Paulo",
+      "sourceUrl": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/datafolha-presidente-junho-2026/",
+      "numbers": {
+        "lula": 41,
+        "flavio": 31,
+        "outros": 17,
+        "branco": 7,
+        "indecisos": 4
+      },
+      "note": "Cenário estimulado de 1º turno; Lula oscila de 40% (maio) para 41% e Flávio mantém 31%."
+    },
+    {
       "id": "quaest-2026-06",
       "label": "Genial/Quaest · junho 2026",
       "institute": "Genial/Quaest",
