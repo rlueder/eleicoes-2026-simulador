@@ -1,6 +1,28 @@
 {
   "polls": [
     {
+      "id": "atlasintel-2026-06",
+      "label": "AtlasIntel · junho 2026",
+      "institute": "AtlasIntel",
+      "released": "2026-07-01",
+      "fieldwork": "26 a 30 de junho de 2026",
+      "method": "questionário digital (recrutamento aleatório)",
+      "sample": 4999,
+      "marginPP": 1,
+      "confidence": 95,
+      "tse": "BR-04582/2026",
+      "contractor": null,
+      "sourceUrl": "https://www.cnnbrasil.com.br/eleicoes/atlas-bloomberg-lula-tem-463-e-flavio-366-no-1o-turno/",
+      "numbers": {
+        "lula": 46.3,
+        "flavio": 36.6,
+        "outros": 15.9,
+        "branco": 1.1,
+        "indecisos": 0.1
+      },
+      "note": "Cenário estimulado de 1º turno divulgado em parceria com a Bloomberg Línea; recursos próprios do instituto. Lula 46,3% x Flávio 36,6%; no 2º turno, Lula 48,8% x Flávio 42,3%."
+    },
+    {
       "id": "datafolha-2026-06",
       "label": "Datafolha · junho 2026",
       "institute": "Datafolha",
